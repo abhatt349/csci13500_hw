@@ -1,3 +1,13 @@
+/*
+Author: Marcus Ng
+Course: CSCI-135
+Instructor: Maryash
+Assignment: HW4.6
+
+The program takes in two units (in, cm, m) and a value by the user
+and prints out the converted value with the unit.
+*/
+
 #include <iostream>
 #include <string>
 
