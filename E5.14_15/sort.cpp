@@ -54,16 +54,13 @@ void sort2(int& a, int& b) {
 // E5.15
 void sort3(int& a, int& b, int& c) {
   // Sort in ascending order
-  if (a > b) {
-    sort2(a, b);
-  }
-  if (b > c) {
-    sort2(b, c);
-  }
   if (a > c) {
     sort2(a, c);
   }
   if (a > b) {
     sort2(a, b);
+  }
+  if (b > c) {
+    sort2(b, c);
   }
 }
