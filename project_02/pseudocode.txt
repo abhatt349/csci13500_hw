@@ -1,0 +1,7 @@
+Phase 1
+User enters a word, and the program only reports pronunciation as a list of phonemes.
+Pseudocode
+1) Take user input and capitalize it
+2) Loop through the textfile
+3) For each line, split line on spaces and compare the beforestring to the user's input
+4) If the beforestring and user input match, then print the afterstring
