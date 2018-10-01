@@ -2,12 +2,15 @@
 Author: Marcus Ng
 Course: CSCI-135
 Instructor: Maryash
-Assignment: Project 2 Phase 1
+Assignment: Project 2 Phase 2
 
 1) Take user input and capitalize it
 2) Loop through the text file
-3) For each line, split line on spaces and compare the beforestring to the user's input
-4) If the beforestring and user input match, then print the afterstring
+3) For each line, split line on spaces and compare the beforestring (word) to the user's input
+4) If the beforestring and user input match, then store and print the afterstring 
+5) Loop through the text file and compare the pronunciation with the afterstring of other words
+6) If the afterstring and the pronunciation of another word match, then append the beforestring to a string.
+7) When the loop is over, print the string similar words
 */
 
 #include <iostream>
@@ -23,20 +26,37 @@ void splitOnSpace(string s, string &, string &);
 
 int main() {
   std::ifstream file("cmudict.0.7a.txt");
-  
-  string word;
+
+  bool found = false;
+  string word, pron;
   cin >> word;
   capitalize(word);
   cout << "\n";
 
+  // Phase I
   string line, s, pronunciation;
   while (getline(file, line)) {
     splitOnSpace(line, s, pronunciation);
-    if (word == s) {
+    if (word == s && !found) {
+      pron = pronunciation;
       cout << "Pronunciation    :" << pronunciation << "\n";
-      return 0;
+      found = true;
     }
   }
+
+  // Reset file
+  file.clear();
+  file.seekg(0, file.beg);
+
+  // Phase II
+  string identical = "";
+  while (getline(file, line)) {
+    splitOnSpace(line, s, pronunciation);
+    if (pron == pronunciation && word != s) {
+      identical += s + " ";
+    }
+  }
+  cout << "Identical        : " << identical << "\n";
   
   return 0;
 }
