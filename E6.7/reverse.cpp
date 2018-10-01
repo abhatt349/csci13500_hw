@@ -4,7 +4,7 @@ Instructor: Maryash
 Course: CSCI-135
 Assignment: E6.7
 
-Reverse a user given array
+Reverse an array
 */
 
 #include <iostream>
@@ -20,7 +20,7 @@ int main() {
   cout << "Original Array: ";
   print_array(arr, SIZE);
   reverse_array(arr, SIZE);
-  cout << "Reversed array: ";
+  cout << "Reversed Array: ";
   print_array(arr, SIZE);;
   cout << "\n";
   
