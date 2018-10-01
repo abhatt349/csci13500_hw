@@ -2,7 +2,7 @@
 Author: Marcus Ng
 Course: CSCI-135
 Instructor: Maryash
-Assignment: Project 2 Phase 2
+Assignment: Project 2 Phase II
 
 1) Take user input and capitalize it
 2) Loop through the text file
@@ -25,7 +25,7 @@ void capitalize(string &);
 void splitOnSpace(string s, string &, string &);
 
 int main() {
-  std::ifstream file("cmudict.0.7a.txt");
+  std::ifstream file("cmudict.0.7a");
 
   bool found = false;
   string word, pron;
@@ -35,13 +35,19 @@ int main() {
 
   // Phase I
   string line, s, pronunciation;
-  while (getline(file, line)) {
+  while (getline(file, line) && !found) {
     splitOnSpace(line, s, pronunciation);
-    if (word == s && !found) {
+    if (word == s) {
       pron = pronunciation;
       cout << "Pronunciation    :" << pronunciation << "\n";
       found = true;
     }
+  }
+  
+  // If word not found
+  if (!found) {
+    cout << "Not found!\n";
+    return 0;
   }
 
   // Reset file
