@@ -4,13 +4,14 @@ Course: CSCI-135
 Instructor: Maryash
 Assignment: Project 2 Phase II
 
-1) Take user input and capitalize it
-2) Loop through the text file
-3) For each line, split line on spaces and compare the beforestring (word) to the user's input
-4) If the beforestring and user input match, then store and print the afterstring 
-5) Loop through the text file and compare the pronunciation with the afterstring of other words
-6) If the afterstring and the pronunciation of another word match, then append the beforestring to a string.
-7) When the loop is over, print the string similar words
+1) Loop through the text file
+2) When the word’s pronunciation is different from another word’s pronunciation, 
+find the index where the pronunciations are different and take the substrings of
+the index to the end for both strings
+3) Split both pronunciations on spaces and compare the afterstring
+3) If the afterstrings are the same, then append the new word to a string
+4) Print out the new words when the loop ends
+
 */
 
 #include <iostream>
@@ -43,14 +44,13 @@ int main() {
       found = true;
     }
   }
-  
+
   // If word not found
   if (!found) {
     cout << "Not found!\n";
     return 0;
   }
 
-  // Reset file
   file.clear();
   file.seekg(0, file.beg);
 
@@ -63,6 +63,50 @@ int main() {
     }
   }
   cout << "Identical        : " << identical << "\n";
+
+  file.clear();
+  file.seekg(0, file.beg);
+  
+  // Phase III
+  string replacePhoneme = "";
+  while (getline(file, line)) {
+    splitOnSpace(line, s, pronunciation);
+    if (pron != pronunciation && word != s) {
+      string wordPron = pron;
+      string currPron = pronunciation;
+      int length = wordPron.length();
+      int index = 0;
+      bool different = false;
+      
+      // Length of shorter string
+      if (wordPron.length() > currPron.length()) {
+	length = currPron.length();
+      }
+
+      // Find index where pronunciations are different
+      for (int i = 0; i < length; i++) {
+	if (wordPron.at(i) != currPron.at(i) && !different) {
+	  index = i;
+	  different = true;
+	}
+      }
+
+      if (different) {
+	// Substring to end
+	wordPron = wordPron.substr(index);
+	currPron = currPron.substr(index);
+
+	string beforeWordPron, afterWordPron, beforeCurrPron, afterCurrPron;
+	splitOnSpace(wordPron, beforeWordPron, afterWordPron);
+	splitOnSpace(currPron, beforeCurrPron, afterCurrPron);
+
+	if (afterWordPron == afterCurrPron) {
+	  replacePhoneme += s + " ";
+	}
+      }
+    }
+  }
+  cout << "Replace Phoneme  : " << replacePhoneme << "\n";
   
   return 0;
 }
