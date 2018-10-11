@@ -24,6 +24,7 @@ using std::cout;
 
 void capitalize(string &);
 void splitOnSpace(string s, string &, string &);
+bool is_valid(string s);
 
 int main() {
   std::ifstream file("cmudict.0.7a");
@@ -34,6 +35,10 @@ int main() {
   capitalize(word);
   cout << "\n";
 
+  if (!is_valid(word)) {
+    cout << "Not found!\n";
+  }
+  
   // Phase I
   string line, s, pronunciation;
   while (getline(file, line) && !found) {
@@ -100,7 +105,7 @@ int main() {
 	splitOnSpace(wordPron, beforeWordPron, afterWordPron);
 	splitOnSpace(currPron, beforeCurrPron, afterCurrPron);
 
-	if (afterWordPron == afterCurrPron) {
+	if (is_valid(s) && afterWordPron == afterCurrPron) {
 	  replacePhoneme += s + " ";
 	}
       }
@@ -134,3 +139,14 @@ void splitOnSpace(string s, string & before, string & after) {
   // accumulate after space
   while (i < s.size()) { after += s[i]; i++; }
 }
+
+bool is_valid(string s) {
+  for (unsigned int i = 0; i < s.length(); i++) {
+    if (!((s[i] >= 'A' && s[i] <= 'Z')
+	  || s[i] == '\'')) {
+      return false;
+    }
+  }
+  return true;
+}
+  
