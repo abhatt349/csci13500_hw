@@ -2,16 +2,12 @@
 Author: Marcus Ng
 Course: CSCI-135
 Instructor: Maryash
-Assignment: Project 2 Phase II
+Assignment: Project 2 Phase IV
 
-1) Loop through the text file
-2) When the word’s pronunciation is different from another word’s pronunciation, 
-find the index where the pronunciations are different and take the substrings of
-the index to the end for both strings
-3) Split both pronunciations on spaces and compare the afterstring
-3) If the afterstrings are the same, then append the new word to a string
-4) Print out the new words when the loop ends
-
+1) Loop through textfile
+2) Find pronunciation that does not match the current word's pronuncation
+3) Loop through the word to seee if it only has one extra phoneme
+4) Add to addPhoneme if it only adds one phoneme to the original pronunciation
 */
 
 #include <iostream>
@@ -112,6 +108,68 @@ int main() {
     }
   }
   cout << "Replace Phoneme  : " << replacePhoneme << "\n";
+
+  file.clear();
+  file.seekg(0, file.beg);
+  
+  // Phase IV
+  string addPhoneme = "";
+  while (getline(file, line)) {
+    splitOnSpace(line, s, pronunciation);
+    // If not the current word
+    if (pron != pronunciation && word != s) {
+      string wordPron = pron;
+      string currPron = pronunciation;
+      int length = wordPron.length();
+      int index = 0;
+      int differences = 0;
+
+      // Length of shorter string
+      if (wordPron.length() > currPron.length()) {
+	length = currPron.length();
+      }
+
+      // Look for first difference
+      for (int i = 0; i < length; i++) {
+	if (wordPron.at(i) != currPron.at(i) && differences == 0) {
+	  index = i;
+	  differences += 1;
+	}
+      }
+
+      string beforeWordPron, afterWordPron, beforeCurrPron, afterCurrPron;
+      // Second difference
+      if (differences == 1) {
+	// Substring to end
+	wordPron = wordPron.substr(index);
+	currPron = currPron.substr(index);
+	
+	splitOnSpace(currPron, beforeCurrPron, afterCurrPron);
+
+	// Check for second difference by comparing the rest of the afterCurrPron
+	// with the rest of the original word
+	if (wordPron != afterCurrPron) {
+	  differences += 1;
+	}
+	
+	// If only one difference, then append to addPhoneme
+	if (is_valid(s) && differences == 1) {
+	  addPhoneme += s + " ";
+	}
+      }
+      
+      // Check for phoneme at end
+      if (differences == 0 && wordPron == currPron.substr(0, wordPron.length())) {
+	// Add 1 to get rid of space
+	splitOnSpace(currPron.substr(wordPron.length() + 1), beforeCurrPron, afterCurrPron);
+	// No afterstring --> One phoneme extra
+	if (is_valid(s) && afterCurrPron == "") {
+	  addPhoneme += s + " ";
+	}
+      }
+    }
+  }
+  cout << "Add phoneme      : " << addPhoneme << "\n";
   
   return 0;
 }
