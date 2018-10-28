@@ -2,12 +2,11 @@
 Author: Marcus Ng
 Course: CSCI-135
 Instructor: Maryash
-Assignment: Project 2 Phase IV
+Assignment: Project 2 Phase V
 
-1) Loop through textfile
-2) Find pronunciation that does not match the current word's pronuncation
-3) Loop through the word to seee if it only has one extra phoneme
-4) Add to addPhoneme if it only adds one phoneme to the original pronunciation
+Enter a word to find its pronunciation, words with identical phonemes, 
+words with a different phoneme, words with an extra phoneme, 
+and words with one less phoneme.
 */
 
 #include <iostream>
@@ -21,6 +20,7 @@ using std::cout;
 void capitalize(string &);
 void splitOnSpace(string s, string &, string &);
 bool is_valid(string s);
+//void pronunciation(string line, string s, string pronunciation, string word, stirng pron);
 
 int main() {
   std::ifstream file("cmudict.0.7a");
@@ -41,7 +41,7 @@ int main() {
     splitOnSpace(line, s, pronunciation);
     if (word == s) {
       pron = pronunciation;
-      cout << "Pronunciation    :" << pronunciation << "\n";
+      cout << "Pronunciation    :" << pronunciation << "\n\n";
       found = true;
     }
   }
@@ -63,7 +63,6 @@ int main() {
       identical += s + " ";
     }
   }
-  cout << "Identical        : " << identical << "\n";
 
   file.clear();
   file.seekg(0, file.beg);
@@ -107,7 +106,6 @@ int main() {
       }
     }
   }
-  cout << "Replace Phoneme  : " << replacePhoneme << "\n";
 
   file.clear();
   file.seekg(0, file.beg);
@@ -137,7 +135,7 @@ int main() {
 	}
       }
 
-      string beforeWordPron, afterWordPron, beforeCurrPron, afterCurrPron;
+      string beforeCurrPron, afterCurrPron;
       // Second difference
       if (differences == 1) {
 	// Substring to end
@@ -169,8 +167,57 @@ int main() {
       }
     }
   }
-  cout << "Add phoneme      : " << addPhoneme << "\n";
+
+  file.clear();
+  file.seekg(0, file.beg);
   
+  // Phase V
+  string removePhoneme = "";
+  while (getline(file, line)) {
+    
+    splitOnSpace(line, s, pronunciation);
+    // If not the current word
+    if (is_valid(s) && pron != pronunciation && word != s) {
+      string wordPron = pron;
+      string currPron = pronunciation;
+      int length = wordPron.length();
+      int index = 0;
+      string beforeWordPron, afterWordPron, beforeCurrPron, afterCurrPron;
+      
+      // Length of shorter string
+      if (wordPron.length() > currPron.length()) {
+	length = currPron.length();
+      }
+
+      while (index < length && wordPron.at(index) == currPron.at(index)) {
+	index++;
+      }
+
+      
+      // Substring to end
+      wordPron = wordPron.substr(index);
+
+      int i = 0;
+      while (i < wordPron.length() && isspace(wordPron.at(i))) {
+	i++;
+      }
+      wordPron = wordPron.substr(i);
+     
+      splitOnSpace(wordPron, beforeWordPron, afterWordPron);
+      afterCurrPron = currPron.substr(index);
+
+      // If after words are the same, then add to removePhoneme
+      if (afterWordPron == afterCurrPron) {
+	removePhoneme += s + " ";
+      }
+    }
+  }
+
+  cout << "Identical        : " << identical << "\n";
+  cout << "Replace Phoneme  : " << replacePhoneme << "\n";
+  cout << "Add phoneme      : " << addPhoneme << "\n";
+  cout << "Remove phoneme   : " << removePhoneme << "\n";
+
   return 0;
 }
 
