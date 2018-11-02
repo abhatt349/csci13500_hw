@@ -1,3 +1,12 @@
+/*
+Author: Marcus Ng
+Course: CSCI-135
+Instructor: Maryash
+Assignment: E7.13
+
+This program reverses a c string.
+*/
+
 #include <iostream>
 #include <stdlib.h>
 
