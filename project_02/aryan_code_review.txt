@@ -1,0 +1,8 @@
+Overall great!!!
+However, a few small points:
+
+1) There's a lot of repetition in your code; try to make those into functions so you don't have to keep rewriting it
+2) More comments describing what code does never hurt
+3) Try to make your code more modular (less chunky)
+
+Great job!!!
